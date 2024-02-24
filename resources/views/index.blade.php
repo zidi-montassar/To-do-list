@@ -12,6 +12,10 @@ $undone = false;
 
 <h2 class="mt-5">Your Tasks List :</h2>
 
+<div class="container" style="d-flex">
+    <a href="" class="btn btn-primary">New Task</a>
+</div>
+
 <form action="" method="GET">
     @csrf
     <select name="status" id="">
