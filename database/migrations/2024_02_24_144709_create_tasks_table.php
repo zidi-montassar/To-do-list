@@ -17,7 +17,6 @@ return new class extends Migration
             $table->longText('description');
             $table->dateTime('deadline')->nullable();
             $table->boolean('done');
-            
             $table->timestamps();
         });
     }
