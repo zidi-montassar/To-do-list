@@ -12,11 +12,31 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $filter=null)
     {
-        return view('index', [
-            'tasks' => Task::orderBy('created_at', 'desc')->paginate(7)
-        ]);
+        if($filter === '1'){
+            $tasks = Task::done(true)->recent()->paginate(7);
+        }else if($filter === '0'){
+            $tasks = Task::done(false)->recent()->paginate(7);
+        }else{
+            $tasks = Task::recent()->paginate(7);
+        }
+        /* $tasks = Task::orderBy('created_at', 'desc')->paginate(7);*/ 
+        //dd($filter);
+        /*if($done_filter = '1'){
+            return view('index', [
+                'tasks' => Task::done(true)->recent()->paginate(7)
+            ]);
+        }else if($done_filter = '0'){
+            return view('index', [
+                'tasks' => Task::done(false)->recent()->paginate(7)
+            ]);
+        }else{*/
+            return view('index', [
+                'tasks' => $tasks
+            ]);
+        //}
+        
     }
 
     /**
@@ -33,18 +53,19 @@ class TaskController extends Controller
     public function store(TaskFormRequest $request)
     {
         //dd($request->validated());
-        $tassk = Task::create($request->validated());
-        $task = Task::find($tassk->id);
-        return to_route('Task.show', ['Task' => $task])->with('success', 'Your new task is created successfully');
+        $task = Task::create($request->validated());
+        //$task = Task::find($tassk->id);
+        return to_route('Task.index')->with('success', 'Your new task is created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Task $Task)
     {
+        //$task = Task::find($task);
         //dd($task);
-        return view('taskshow', ['task' => $task]);
+        return view('taskshow', ['Task' => $Task]);
     }
 
     /**

@@ -24,7 +24,7 @@ class TaskFormRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3'],
             'description' => ['required'],
-            //'deadline' => ['date'],
+            'deadline' => ['date'],
             'done' => ['required', 'boolean']
         ];
     }
