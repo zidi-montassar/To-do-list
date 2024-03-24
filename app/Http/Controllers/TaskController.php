@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexFormRequest;
 use App\Http\Requests\TaskFormRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -12,11 +13,12 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $filter=null)
+    public function index(IndexFormRequest $request)
     {
-        if($filter === '1'){
+        //dd($request->validated());
+        if($request->validated('status') === '1'){
             $tasks = Task::done(true)->recent()->paginate(7);
-        }else if($filter === '0'){
+        }else if($request->validated('status') === '0'){
             $tasks = Task::done(false)->recent()->paginate(7);
         }else{
             $tasks = Task::recent()->paginate(7);
@@ -71,24 +73,36 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Task $Task)
     {
-        //
+        return view('taskupdate', ['Task' => $Task]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TaskFormRequest $request, Task $Task)
     {
-        //
+        $Task->update($request->validated());
+        return to_route('Task.index')->with('success', 'Your new task is updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $Task)
     {
-        //
+        $Task->delete();
+        return to_route('Task.index')->with('success', 'The task has been deleted successfully');
+    }
+
+    /**
+     * Direct status change.
+     */
+    public function statusupdate(Task $Task)
+    {
+        $new_status = $Task->done == '1' ? '0' : '1';
+        $Task->update(['done' => $new_status]);
+        return to_route('Task.index')->with('success', 'The task status is updated successfully');
     }
 }

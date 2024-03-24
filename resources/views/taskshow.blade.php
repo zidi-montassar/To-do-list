@@ -12,7 +12,11 @@
     @php
     //dd($task)
     @endphp
-    <h1 class="mt-2">Task :{{ $Task->name }}</h1>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 class="mt-2">Task :{{ $Task->name }}</h1>
+        <a href="{{ route('Task.edit', ['Task' => $Task]) }}" class="btn btn-primary">Edit</a>
+    </div>
+    
     <div class="form-group mt-5">
         <div class="form-control mt-2">
             <h3>Description :</h3>

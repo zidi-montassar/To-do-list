@@ -31,7 +31,7 @@ class Task extends Model
 
     public function scopeDone(Builder $builder, bool $done): Builder
     {
-        return $builder->where('done', $done = false ? 0 : 1);
+        return $builder->where('done', $done === false ? '0' : '1');
     }
 
     public function scopeRecent(Builder $builder): Builder

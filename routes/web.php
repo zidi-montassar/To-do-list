@@ -20,3 +20,5 @@ $slugRegex = '[0-9a-z\-]+';
 
 
 Route::resource('Task', TaskController::class);
+
+Route::put('/Task/{Task}/statusupdate', [TaskController::class, 'statusupdate'])->name('status.update');
